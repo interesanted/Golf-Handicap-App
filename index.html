@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubhouse Golf Handicap Tracker</title>
+    <meta name="description" content="A free, premium, easy-to-use golf handicap tracker for the Pacific Northwest and Portland Metro area.">
+    <!-- Google Fonts: Outfit for modern UI, Playfair Display for elegant headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js CDN for beautiful trends -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="theme-light">
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <span class="brand-icon">⛳</span>
+                <div class="brand-text">
+                    <h1>Clubhouse</h1>
+                    <span class="sub-brand">Handicap Tracker</span>
+                </div>
+            </div>
+            
+            <div class="handicap-badge-container">
+                <div class="handicap-label">Handicap Index</div>
+                <div class="handicap-value" id="header-handicap-val">--.-</div>
+            </div>
+
+            <div class="header-controls">
+                <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle between dark and light mode">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard-view">
+                <span class="tab-icon">📊</span> Dashboard
+            </button>
+            <button class="tab-btn" data-tab="post-score-view">
+                <span class="tab-icon">✏️</span> Post Score
+            </button>
+            <button class="tab-btn" data-tab="history-view">
+                <span class="tab-icon">📜</span> Score History
+            </button>
+            <button class="tab-btn" data-tab="courses-view">
+                <span class="tab-icon">🌲</span> Course Directory
+            </button>
+            <button class="tab-btn" data-tab="settings-view">
+                <span class="tab-icon">⚙️</span> Settings
+            </button>
+        </nav>
+    </header>
+
+    <main class="app-content">
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="dashboard-view" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- Large Handicap Display Card -->
+                <div class="card handicap-hero-card">
+                    <div class="card-glow"></div>
+                    <div class="hero-card-content">
+                        <h3>Your Handicap Index</h3>
+                        <div class="large-gauge">
+                            <span class="gauge-value" id="dash-handicap-val">--.-</span>
+                            <span class="gauge-label" id="dash-handicap-status">Unestablished</span>
+                        </div>
+                        <p class="rounds-needed-text" id="dash-rounds-status">Log at least 3 rounds (54 holes) to establish your index.</p>
+                        <div class="quick-stats-row">
+                            <div class="quick-stat">
+                                <span class="stat-label">Lowest Gross</span>
+                                <span class="stat-val" id="stat-low-gross">--</span>
+                            </div>
+                            <div class="quick-stat">
+                                <span class="stat-label">Best Diff</span>
+                                <span class="stat-val" id="stat-best-diff">--.-</span>
+                            </div>
+                            <div class="quick-stat">
+                                <span class="stat-label">Total Rounds</span>
+                                <span class="stat-val" id="stat-total-rounds">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Handicap Trend Chart Card -->
+                <div class="card chart-card">
+                    <h3>Handicap Index & Differential Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="handicapChart"></canvas>
+                        <div class="chart-placeholder" id="chart-placeholder">
+                            <span class="placeholder-icon">📈</span>
+                            <p>Trend chart will appear here once you log 3 or more rounds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Rounds Panel -->
+            <div class="card recent-rounds-card">
+                <div class="card-header">
+                    <h3>Recent Rounds</h3>
+                    <button class="btn btn-text" onclick="switchTab('history-view')">View All &rarr;</button>
+                </div>
+                <div class="table-container">
+                    <table class="rounds-table" id="recent-rounds-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Course</th>
+                                <th>Score</th>
+                                <th>Rating / Slope</th>
+                                <th>Differential</th>
+                                <th>Type</th>
+                                <th title="WHS counts the best 8 of your last 20 score differentials to determine your Handicap Index">Counting</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-rounds-list">
+                            <tr>
+                                <td colspan="7" class="empty-state">No rounds logged yet. Post a score to get started!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. POST SCORE VIEW -->
+        <section id="post-score-view" class="tab-content">
+            <div class="max-width-card-container">
+                <div class="card form-card">
+                    <div class="card-header-accent"></div>
+                    <h2>Post a New Score</h2>
+                    <p class="form-sub">Enter your score details below to calculate your differential and update your handicap.</p>
+                    
+                    <form id="post-score-form">
+                        <!-- Select Course -->
+                        <div class="form-group">
+                            <label for="score-course">Select Golf Course</label>
+                            <div class="select-wrapper">
+                                <select id="score-course" required>
+                                    <option value="" disabled selected>-- Select a Course --</option>
+                                    <!-- Preloaded and custom courses populated here -->
+                                </select>
+                            </div>
+                            <span class="help-action-text" onclick="switchTab('courses-view')">Course not listed? Add custom course &rarr;</span>
+                        </div>
+
+                        <!-- Select Tees -->
+                        <div class="form-group" id="tee-select-group">
+                            <label for="score-tee">Select Tee Box</label>
+                            <div class="select-wrapper">
+                                <select id="score-tee" required disabled>
+                                    <option value="" disabled selected>Select a course first</option>
+                                </select>
+                            </div>
+                            <div class="tee-info-badge" id="tee-info-badge" style="display: none;">
+                                <span id="tee-info-text">Tee Info: -- / -- (Par --)</span>
+                            </div>
+                        </div>
+
+                        <!-- Round Type (18 vs 9 holes) -->
+                        <div class="form-group">
+                            <label>Round Type</label>
+                            <div class="toggle-buttons">
+                                <label class="toggle-btn-label">
+                                    <input type="radio" name="score-holes" value="18" checked id="holes-18">
+                                    <span>18 Holes</span>
+                                </label>
+                                <label class="toggle-btn-label">
+                                    <input type="radio" name="score-holes" value="9" id="holes-9">
+                                    <span>9 Holes</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 9-Hole Approximation Helper (Hidden by default) -->
+                        <div class="approximation-helper-card" id="approx-helper" style="display: none;">
+                            <div class="helper-icon">💡</div>
+                            <div class="helper-content">
+                                <h4>9-Hole Approximation Enabled</h4>
+                                <p id="approx-helper-desc">This course does not have official 9-hole ratings. We will automatically approximate the ratings from the 18-hole tee parameters (Rating / 2, same Slope, Par / 2).</p>
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="use-auto-approx" checked>
+                                    <label for="use-auto-approx">Use auto-approximations</label>
+                                </div>
+                                <div class="manual-approx-inputs" id="manual-approx-inputs" style="display: none;">
+                                    <div class="input-grid">
+                                        <div class="form-group-sub">
+                                            <label for="manual-rating">9-Hole Rating</label>
+                                            <input type="number" id="manual-rating" step="0.1" placeholder="e.g. 35.5">
+                                        </div>
+                                        <div class="form-group-sub">
+                                            <label for="manual-slope">9-Hole Slope</label>
+                                            <input type="number" id="manual-slope" placeholder="e.g. 120">
+                                        </div>
+                                        <div class="form-group-sub">
+                                            <label for="manual-par">9-Hole Par</label>
+                                            <input type="number" id="manual-par" placeholder="e.g. 36">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Adjusted Gross Score Input -->
+                        <div class="form-group">
+                            <div class="label-with-tooltip">
+                                <label for="score-gross">Adjusted Gross Score</label>
+                                <span class="info-tooltip" title="For handicap purposes, your maximum score on any hole is capped at a Net Double Bogey (Par + 2 + any handicap strokes you get on that hole). If you blew up on a hole, adjust your total score down accordingly before entering.">❓ How to adjust?</span>
+                            </div>
+                            <input type="number" id="score-gross" min="20" max="200" placeholder="e.g. 85" required>
+                        </div>
+
+                        <!-- Date Played -->
+                        <div class="form-group">
+                            <label for="score-date">Date Played</label>
+                            <input type="date" id="score-date" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Post Score</button>
+                            <button type="reset" class="btn btn-secondary">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SCORE HISTORY VIEW -->
+        <section id="history-view" class="tab-content">
+            <div class="card history-card">
+                <div class="card-header">
+                    <h2>Score History</h2>
+                    <div class="history-stats">
+                        <span class="badge badge-info"><span id="history-round-count">0</span> Rounds</span>
+                    </div>
+                </div>
+                <p class="history-sub">Your logged rounds in chronological order. Yellow-highlighted rows are currently "counting" toward your Handicap Index (WHS takes the lowest differentials from your last 20 rounds).</p>
+                
+                <div class="table-container">
+                    <table class="rounds-table" id="full-history-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Course</th>
+                                <th>Tee</th>
+                                <th>Holes</th>
+                                <th>Gross Score</th>
+                                <th>Rating / Slope</th>
+                                <th>Differential</th>
+                                <th>Counting</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-history-list">
+                            <tr>
+                                <td colspan="10" class="empty-state">No rounds logged yet. Go to 'Post Score' to log your rounds!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. COURSE DIRECTORY VIEW -->
+        <section id="courses-view" class="tab-content">
+            <div class="courses-layout-grid">
+                <!-- Preloaded & Custom Course Directory -->
+                <div class="card courses-list-card">
+                    <div class="card-header">
+                        <h2>Course Directory</h2>
+                        <div class="search-box">
+                            <input type="text" id="course-search" placeholder="Search courses...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="courses-grid" id="courses-container">
+                        <!-- Course cards will be dynamically rendered here -->
+                    </div>
+                </div>
+
+                <!-- Add Custom Course Form -->
+                <div class="card add-course-card">
+                    <h2>Add Custom Course</h2>
+                    <p class="form-sub">If your course isn't listed, add it here with its tee boxes, ratings, and slopes.</p>
+                    
+                    <form id="add-course-form">
+                        <div class="form-group">
+                            <label for="course-name">Course Name</label>
+                            <input type="text" id="course-name" placeholder="e.g. Foxglove at Mt Hood Resort" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course-location">Location (optional)</label>
+                            <input type="text" id="course-location" placeholder="e.g. Welches, OR">
+                        </div>
+
+                        <!-- Tee configurations list -->
+                        <div class="form-group">
+                            <label>Tee Boxes & Ratings</label>
+                            <p class="field-desc">Add at least one set of tees (e.g. Blue, White, Red) with rating and slope.</p>
+                            
+                            <div class="tees-builder" id="tees-builder">
+                                <div class="tee-builder-row default-row">
+                                    <input type="text" class="tee-name-input" placeholder="Tee Name (e.g. Blue)" required>
+                                    <input type="number" class="tee-par-input" placeholder="Par" min="20" max="80" required>
+                                    <input type="number" class="tee-rating-input" placeholder="Rating" step="0.1" required>
+                                    <input type="number" class="tee-slope-input" placeholder="Slope" min="55" max="155" required>
+                                    <button type="button" class="btn btn-remove-tee" disabled>&times;</button>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn-add-tee-row">+ Add Another Tee Box</button>
+                        </div>
+
+                        <!-- 9-Hole Specific Ratings Toggle -->
+                        <div class="form-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="has-official-9">
+                                <label for="has-official-9">This course has separate official 9-hole ratings</label>
+                            </div>
+                        </div>
+
+                        <div class="nine-tees-builder-section" id="nine-tees-section" style="display: none;">
+                            <label>Official 9-Hole Tee Ratings</label>
+                            <p class="field-desc">Specify separate 9-hole Course Ratings and Slopes if published.</p>
+                            <div class="tees-builder" id="nine-tees-builder">
+                                <!-- Prepopulated row for 9-hole matching -->
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Add Course</button>
+                            <button type="reset" class="btn btn-secondary" id="reset-course-btn">Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SETTINGS VIEW -->
+        <section id="settings-view" class="tab-content">
+            <div class="settings-grid">
+                <!-- Calculation settings -->
+                <div class="card settings-card">
+                    <h2>Handicap Calculation Settings</h2>
+                    <p class="form-sub">Customize how the app calculates your handicap index and score differentials.</p>
+                    
+                    <div class="settings-group">
+                        <div class="setting-item">
+                            <div class="setting-desc">
+                                <h3>9-Hole Handicap Calculation Method</h3>
+                                <p>WHS 2024 uses an Expected Score model which depends on a player's Handicap Index. If you do not have an established index yet, Simple Scaling is used automatically as a fallback.</p>
+                            </div>
+                            <div class="setting-control">
+                                <div class="select-wrapper">
+                                    <select id="setting-nine-hole-method">
+                                        <option value="simple-scale">Simple Scaling / Doubling (2 * 9-Hole Diff)</option>
+                                        <option value="whs-2024" selected>WHS 2024 (9-Hole Diff + Expected Score)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-desc">
+                                <h3>Initial Handicap Index Override</h3>
+                                <p>If you already have an established handicap index, you can set it here. This index will be used to bootstrap your first 9-hole "Expected Score" calculations before your scores in the app take over.</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="number" id="setting-initial-index" step="0.1" min="0" max="54.0" placeholder="e.g. 14.5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup and data management -->
+                <div class="card settings-card">
+                    <h2>Data Backup & Recovery</h2>
+                    <p class="form-sub">All your data is saved in your browser's local storage. Export it as a file to back it up or transfer it to another device.</p>
+                    
+                    <div class="backup-actions">
+                        <div class="backup-column">
+                            <h3>Export Data</h3>
+                            <p>Download a file containing all your logged rounds and custom courses.</p>
+                            <button id="btn-export-data" class="btn btn-secondary">Download Backup (.json)</button>
+                        </div>
+                        <div class="backup-column">
+                            <h3>Import Data</h3>
+                            <p>Upload a previously exported backup file to restore your scores.</p>
+                            <label class="btn btn-secondary file-upload-label">
+                                Upload Backup File
+                                <input type="file" id="file-import-data" accept=".json" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="settings-divider">
+
+                    <div class="danger-zone">
+                        <h3>Danger Zone</h3>
+                        <p>This action will permanently delete all your score history and custom courses. This cannot be undone.</p>
+                        <button id="btn-reset-app" class="btn btn-danger">Clear All App Data</button>
+                    </div>
+                </div>
+
+                <!-- System Diagnostics -->
+                <div class="card settings-card">
+                    <h2>Diagnostics & Verification</h2>
+                    <p class="form-sub">Verify that the app's Handicap Index and Score Differential calculations are operating 100% correctly according to the World Handicap System rules.</p>
+                    
+                    <div class="settings-group">
+                        <div class="setting-item" style="border-bottom: none; padding-bottom: 0;">
+                            <div class="setting-desc">
+                                <h3>Calculation Test Suite</h3>
+                                <p>Run 8 automated unit tests verifying 18-hole differentials, 9-hole scaling, WHS 2024 expected scores, and index averages.</p>
+                            </div>
+                            <div class="setting-control" style="flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                                <button id="btn-run-tests" class="btn btn-secondary btn-sm">Run Logic Tests</button>
+                                <span id="test-results-status" style="display: none; font-size: 0.85rem; font-weight: 600;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Editing a Score -->
+    <div class="modal-backdrop" id="edit-score-modal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Edit Round</h2>
+                <button type="button" class="btn-close-modal" id="btn-close-edit-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-score-form">
+                    <input type="hidden" id="edit-score-index">
+                    
+                    <div class="form-group">
+                        <label for="edit-score-course">Course</label>
+                        <input type="text" id="edit-score-course" disabled class="disabled-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-score-tee">Tee Box</label>
+                        <input type="text" id="edit-score-tee" disabled class="disabled-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Round Type</label>
+                        <input type="text" id="edit-score-holes" disabled class="disabled-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-score-gross">Adjusted Gross Score</label>
+                        <input type="number" id="edit-score-gross" min="20" max="200" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-score-date">Date Played</label>
+                        <input type="date" id="edit-score-date" required>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <p>&copy; 2026 Clubhouse Golf Handicap App. Free, open, and private.</p>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="tests.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "rounds": [
+    {
+      "id": "rnd_1782848685293_1i6fa",
+      "courseId": "heronlakes-green",
+      "courseName": "Heron Lakes Golf Club (Greenback)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 42,
+      "rating": 36,
+      "slope": 128,
+      "par": 36,
+      "date": "2026-06-19",
+      "counting": false,
+      "differential": 10.6,
+      "runningHandicap": null,
+      "calculationNotes": "Simple Scaling: 9-Hole Diff (5.3) doubled."
+    },
+    {
+      "id": "rnd_1782848585074_429hc",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 38,
+      "rating": 35.9,
+      "slope": 132,
+      "par": 36,
+      "date": "2026-06-25",
+      "counting": true,
+      "differential": 3.6,
+      "runningHandicap": null,
+      "calculationNotes": "Simple Scaling: 9-Hole Diff (1.8) doubled."
+    },
+    {
+      "id": "rnd_1782848611316_lfuta",
+      "courseId": "rosecity",
+      "courseName": "Rose City Golf Course",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 41,
+      "rating": 35.9,
+      "slope": 123,
+      "par": 36,
+      "date": "2026-06-25",
+      "counting": false,
+      "differential": 9.4,
+      "runningHandicap": 1.6,
+      "calculationNotes": "Simple Scaling: 9-Hole Diff (4.7) doubled."
+    }
+  ],
+  "courses": []
+}

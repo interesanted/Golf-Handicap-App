@@ -909,6 +909,17 @@ function initCourseFormListeners() {
         addTeeBuilderRow();
     });
 
+    // Auto-fetch Greenskeeper Data
+    const fetchGkBtn = document.getElementById("btn-fetch-gk");
+    fetchGkBtn.addEventListener("click", () => {
+        const url = document.getElementById("gk-url").value.trim();
+        if (url) {
+            fetchGreenskeeperData(url);
+        } else {
+            alert("Please paste a Greenskeeper scorecard URL first.");
+        }
+    });
+
     // Checkbox toggles official 9-hole inputs
     hasOfficialNineCheckbox.addEventListener("change", () => {
         if (hasOfficialNineCheckbox.checked) {
@@ -997,6 +1008,98 @@ function initCourseFormListeners() {
         
         alert(`Course "${name}" added successfully!`);
     });
+}
+
+async function fetchGreenskeeperData(gkUrl) {
+    const statusDiv = document.getElementById("gk-status");
+    statusDiv.style.display = "block";
+    statusDiv.textContent = "Fetching scorecard data...";
+    
+    try {
+        // Use allorigins proxy to bypass CORS
+        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(gkUrl);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error("Network response was not ok");
+        
+        const data = await response.json();
+        const html = data.contents;
+        
+        // Parse HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        
+        // Find the tees table. Look for a table containing a th with "Tees"
+        const tables = doc.querySelectorAll("table");
+        let teeTable = null;
+        for (const table of tables) {
+            const th = table.querySelector("th");
+            if (th && th.textContent.includes("Tees")) {
+                teeTable = table;
+                break;
+            }
+        }
+        
+        if (!teeTable) {
+            throw new Error("Could not find the Tees table in the provided URL.");
+        }
+        
+        // Extract rows
+        const rows = teeTable.querySelectorAll("tr");
+        const tees = [];
+        
+        // Start from index 1 to skip header row
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll("td");
+            if (cols.length >= 4) {
+                // Tee Name, Par, Rating, Slope, [Yardage]
+                const name = cols[0].textContent.trim();
+                const par = parseInt(cols[1].textContent.trim(), 10);
+                const rating = parseFloat(cols[2].textContent.trim());
+                const slope = parseInt(cols[3].textContent.trim(), 10);
+                
+                if (name && !isNaN(par) && !isNaN(rating) && !isNaN(slope)) {
+                    tees.push({ name, par, rating, slope });
+                }
+            }
+        }
+        
+        if (tees.length === 0) {
+            throw new Error("Found the Tees table but could not extract any valid tee rows.");
+        }
+        
+        // Populate the builder
+        const teesBuilder = document.getElementById("tees-builder");
+        teesBuilder.innerHTML = ""; // Clear existing
+        
+        tees.forEach((tee, index) => {
+            addTeeBuilderRow();
+            const rows = teesBuilder.querySelectorAll(".tee-builder-row");
+            const newRow = rows[rows.length - 1];
+            
+            newRow.querySelector(".tee-name-input").value = tee.name;
+            newRow.querySelector(".tee-par-input").value = tee.par;
+            newRow.querySelector(".tee-rating-input").value = tee.rating;
+            newRow.querySelector(".tee-slope-input").value = tee.slope;
+        });
+        
+        // Attempt to auto-fill course name if possible
+        const titleMatch = html.match(/<title>(.*?)( Scorecard)? - Greenskeeper/i);
+        if (titleMatch && titleMatch[1]) {
+            const courseNameInput = document.getElementById("course-name");
+            if (!courseNameInput.value) {
+                courseNameInput.value = titleMatch[1].trim();
+            }
+        }
+        
+        statusDiv.style.color = "var(--primary-color)";
+        statusDiv.textContent = `Successfully added ${tees.length} tees!`;
+        
+    } catch (err) {
+        statusDiv.style.color = "var(--danger-color)";
+        statusDiv.textContent = `Error fetching data: ${err.message}`;
+        console.error("Greenskeeper Fetch Error:", err);
+    }
 }
 
 function addTeeBuilderRow(containerId = "tees-builder") {

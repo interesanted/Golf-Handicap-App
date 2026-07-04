@@ -1032,6 +1032,12 @@ select {
     align-items: center;
 }
 
+.tee-builder-row input[type="text"],
+.tee-builder-row input[type="number"] {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.85rem;
+}
+
 .btn-remove-tee {
     background: none;
     border: none;

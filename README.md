@@ -55,4 +55,31 @@ To run this app on both your computer and phone, the best method is hosting it f
     *   Open the live URL on your phone's browser (Safari/Chrome).
     *   Use the **Share** menu (iOS) or **Menu** button (Android) and select **"Add to Home Screen"**. This places a shortcut on your home screen that acts like a standalone app!
 
-*Note: Since the app saves data to `LocalStorage`, your scores are saved locally inside that specific browser. If you log a score on your phone and want it on your computer, simply use the **Export Backup** button in the Settings page on your phone, and upload it via **Import Backup** on your computer.*
+## ☁️ How to Enable GitHub Cloud Sync (Computer & Phone Sync)
+To keep your data automatically synced in real time across your phone and computer:
+
+1.  **Generate a GitHub Personal Access Token (PAT)**:
+    *   Log into [github.com](https://github.com).
+    *   Click your profile picture in the top-right corner and select **Settings**.
+    *   Scroll down to the bottom of the left sidebar and click **Developer Settings**.
+    *   Under **Personal Access Tokens**, select **Fine-grained tokens** and click **Generate new token**.
+    *   Name the token `Golf Sync` and set an expiration (e.g., 90 days or custom).
+    *   Under **Repository access**, select **Only select repositories** and pick your `Golf-Handicap-App` repository.
+    *   Under **Permissions** &rarr; **Repository permissions**, scroll down to **Contents** and change the access dropdown to **Read and write**.
+    *   Scroll to the bottom and click **Generate token**.
+    *   **Copy the generated token immediately!** (It will start with `github_pat_...` and won't be shown again).
+
+2.  **Activate Sync in the App**:
+    *   Open your live app URL on your computer or phone.
+    *   Go to the **Settings** tab (gear icon).
+    *   Under **GitHub Cloud Synchronization**, type in:
+        *   **GitHub Username**: Your GitHub account name.
+        *   **Repository Name**: `Golf-Handicap-App` (or the name of your repo).
+        *   **Personal Access Token**: Paste the `github_pat_...` token you generated.
+    *   Click **Enable GitHub Sync**.
+
+3.  **Set up on your second device**:
+    *   Open the live app URL on your second device (e.g. phone).
+    *   Go to the **Settings** tab, fill in the exact same username, repo, and token, and click **Enable GitHub Sync**.
+    *   The app will automatically pull your existing scores, merge them, and keep them synced every time you add, edit, or delete a round!
+

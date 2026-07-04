@@ -383,6 +383,48 @@
                     </div>
                 </div>
 
+                <!-- GitHub Cloud Synchronization -->
+                <div class="card settings-card">
+                    <h2>GitHub Cloud Synchronization</h2>
+                    <p class="form-sub">Automatically sync your score history and custom courses across your phone and computer using your GitHub account repository.</p>
+                    
+                    <div class="settings-group" id="github-sync-setup" style="display: block;">
+                        <div class="form-group">
+                            <label for="sync-github-username">GitHub Username</label>
+                            <input type="text" id="sync-github-username" placeholder="e.g. yourusername">
+                        </div>
+                        <div class="form-group">
+                            <label for="sync-github-repo">Repository Name</label>
+                            <input type="text" id="sync-github-repo" value="Golf-Handicap-App" placeholder="e.g. Golf-Handicap-App">
+                        </div>
+                        <div class="form-group">
+                            <label for="sync-github-token">Personal Access Token (fine-grained or classic)</label>
+                            <input type="password" id="sync-github-token" placeholder="github_pat_...">
+                            <span class="field-desc">Requires 'contents' read & write permissions on the repository. Stored securely inside your browser's local storage.</span>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="btn-enable-sync" class="btn btn-primary btn-sm">Enable GitHub Sync</button>
+                            <a href="https://github.com/settings/tokens?type=beta" target="_blank" class="btn btn-secondary btn-sm">Generate Token &nearr;</a>
+                        </div>
+                    </div>
+
+                    <div class="settings-group" id="github-sync-active" style="display: none;">
+                        <div class="setting-item" style="border-bottom: none; padding-bottom: 0;">
+                            <div class="setting-desc">
+                                <h3>Sync Status</h3>
+                                <p id="sync-status-text">Connected to <strong id="sync-active-repo">username/repo</strong>.<br>Last synced: <span id="sync-last-time">Never</span></p>
+                            </div>
+                            <div class="setting-control" style="flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button type="button" id="btn-sync-now" class="btn btn-primary btn-sm">Sync Now</button>
+                                    <button type="button" id="btn-disable-sync" class="btn btn-danger btn-sm">Disconnect</button>
+                                </div>
+                                <span id="sync-operation-status" style="display: none; font-size: 0.8rem; font-weight: 600;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Backup and data management -->
                 <div class="card settings-card">
                     <h2>Data Backup & Recovery</h2>

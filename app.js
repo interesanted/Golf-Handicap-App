@@ -110,7 +110,13 @@ let state = {
     settings: {
         theme: 'light',
         nineHoleMethod: 'whs-2024',
-        initialIndex: null
+        initialIndex: null,
+        githubSync: {
+            enabled: false,
+            username: '',
+            repo: 'Golf-Handicap-App',
+            lastSync: null
+        }
     }
 };
 
@@ -126,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initSettingsListeners();
     initBackupListeners();
     initDiagnostics();
+    initGitHubSync();
     
     // Populate form selects
     populateCourseSelects();
@@ -136,6 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Set default date to today
     document.getElementById("score-date").valueAsDate = new Date();
+    
+    // Auto-sync in background on startup if enabled
+    if (state.settings.githubSync && state.settings.githubSync.enabled) {
+        syncWithGitHub().catch(err => console.error("Startup auto-sync failed:", err));
+    }
 });
 
 // --- DATA PERSISTENCE ---
@@ -156,7 +168,11 @@ function loadData() {
         }
         
         if (storedSettings) {
-            state.settings = { ...state.settings, ...JSON.parse(storedSettings) };
+            const parsed = JSON.parse(storedSettings);
+            state.settings = { ...state.settings, ...parsed };
+            if (parsed.githubSync) {
+                state.settings.githubSync = { ...state.settings.githubSync, ...parsed.githubSync };
+            }
         } else {
             localStorage.setItem("clubhouse_settings", JSON.stringify(state.settings));
         }
@@ -767,6 +783,7 @@ function initScoreFormListeners() {
         // Recalculate
         recalculateAll();
         saveData();
+        triggerSyncIfEnabled();
         
         // Reset form & redirect to dashboard
         form.reset();
@@ -955,6 +972,7 @@ function initCourseFormListeners() {
         // Add to state and save
         state.courses.push(newCourse);
         saveData();
+        triggerSyncIfEnabled();
         
         // Reset and rebuild form
         form.reset();
@@ -1045,6 +1063,7 @@ function deleteCourse(courseId) {
     if (confirm("Are you sure you want to delete this custom course? All score history linking to this course will remain, but you won't be able to select it for new score postings.")) {
         state.courses = state.courses.filter(c => c.id !== courseId);
         saveData();
+        triggerSyncIfEnabled();
         populateCourseSelects();
         renderCourseDirectory();
     }
@@ -1057,6 +1076,7 @@ function deleteRound(index) {
         state.rounds.splice(index, 1);
         recalculateAll();
         saveData();
+        triggerSyncIfEnabled();
         renderHistoryTable();
     }
 }
@@ -1100,6 +1120,7 @@ function initScoreFormListeners_edit() {
         // Recalculate everything
         recalculateAll();
         saveData();
+        triggerSyncIfEnabled();
         closeEditModal();
         renderHistoryTable();
     });
@@ -1362,5 +1383,269 @@ function formatDate(dateStr) {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
     } catch (e) {
         return dateStr;
+    }
+}
+
+// --- GITHUB CLOUD SYNCHRONIZATION CONTROLLER ---
+
+function initGitHubSync() {
+    const setupSection = document.getElementById("github-sync-setup");
+    const activeSection = document.getElementById("github-sync-active");
+    
+    if (!setupSection || !activeSection) return;
+    
+    const sync = state.settings.githubSync;
+    
+    if (sync && sync.enabled) {
+        setupSection.style.display = "none";
+        activeSection.style.display = "block";
+        
+        document.getElementById("sync-active-repo").innerText = `${sync.username}/${sync.repo}`;
+        updateSyncTimeDisplay();
+    } else {
+        setupSection.style.display = "block";
+        activeSection.style.display = "none";
+        
+        if (sync) {
+            document.getElementById("sync-github-username").value = sync.username || "";
+            document.getElementById("sync-github-repo").value = sync.repo || "Golf-Handicap-App";
+        }
+        document.getElementById("sync-github-token").value = "";
+    }
+    
+    // Wire up Enable Sync button
+    const btnEnable = document.getElementById("btn-enable-sync");
+    if (btnEnable) {
+        const newBtn = btnEnable.cloneNode(true);
+        btnEnable.parentNode.replaceChild(newBtn, btnEnable);
+        
+        newBtn.addEventListener("click", async () => {
+            const username = document.getElementById("sync-github-username").value.trim();
+            const repo = document.getElementById("sync-github-repo").value.trim();
+            const token = document.getElementById("sync-github-token").value.trim();
+            
+            if (!username || !repo || !token) {
+                alert("Please fill in all fields (username, repository, and token).");
+                return;
+            }
+            
+            newBtn.disabled = true;
+            newBtn.innerText = "Connecting...";
+            
+            // Set temporary token in localStorage to test connection
+            localStorage.setItem("clubhouse_github_token", token);
+            
+            // Update state temporarily
+            state.settings.githubSync.username = username;
+            state.settings.githubSync.repo = repo;
+            state.settings.githubSync.enabled = true;
+            
+            try {
+                await syncWithGitHub();
+                saveData();
+                initGitHubSync();
+                alert("GitHub Sync enabled and synced successfully!");
+            } catch (err) {
+                // Connection failed: revert changes
+                localStorage.removeItem("clubhouse_github_token");
+                state.settings.githubSync.enabled = false;
+                initGitHubSync();
+                alert(`Failed to enable sync: ${err}`);
+            } finally {
+                newBtn.disabled = false;
+                newBtn.innerText = "Enable GitHub Sync";
+            }
+        });
+    }
+    
+    // Wire up Disconnect button
+    const btnDisable = document.getElementById("btn-disable-sync");
+    if (btnDisable) {
+        const newBtn = btnDisable.cloneNode(true);
+        btnDisable.parentNode.replaceChild(newBtn, btnDisable);
+        
+        newBtn.addEventListener("click", () => {
+            if (confirm("Are you sure you want to disconnect from GitHub Cloud Sync? Your local scores will remain intact, but they will no longer sync automatically.")) {
+                localStorage.removeItem("clubhouse_github_token");
+                state.settings.githubSync.enabled = false;
+                state.settings.githubSync.lastSync = null;
+                saveData();
+                initGitHubSync();
+            }
+        });
+    }
+    
+    // Wire up Sync Now button
+    const btnSyncNow = document.getElementById("btn-sync-now");
+    if (btnSyncNow) {
+        const newBtn = btnSyncNow.cloneNode(true);
+        btnSyncNow.parentNode.replaceChild(newBtn, btnSyncNow);
+        
+        newBtn.addEventListener("click", async () => {
+            const statusText = document.getElementById("sync-operation-status");
+            newBtn.disabled = true;
+            if (statusText) {
+                statusText.style.display = "inline";
+                statusText.style.color = "var(--text-secondary)";
+                statusText.innerText = "Syncing...";
+            }
+            
+            try {
+                await syncWithGitHub();
+                saveData();
+                
+                // Refresh dashboard or history if currently on them
+                const activeTab = document.querySelector(".tab-btn.active").getAttribute("data-tab");
+                if (activeTab === 'dashboard-view') renderDashboard();
+                else if (activeTab === 'history-view') renderHistoryTable();
+                else if (activeTab === 'courses-view') renderCourseDirectory();
+                
+                if (statusText) {
+                    statusText.style.color = "var(--primary-color)";
+                    statusText.innerText = "Sync completed!";
+                    setTimeout(() => { statusText.style.display = "none"; }, 3000);
+                }
+            } catch (err) {
+                if (statusText) {
+                    statusText.style.color = "var(--danger-color)";
+                    statusText.innerText = "Sync failed.";
+                }
+                alert(`Sync failed: ${err}`);
+            } finally {
+                newBtn.disabled = false;
+            }
+        });
+    }
+}
+
+function updateSyncTimeDisplay() {
+    const timeEl = document.getElementById("sync-last-time");
+    if (timeEl && state.settings.githubSync && state.settings.githubSync.lastSync) {
+        const date = new Date(state.settings.githubSync.lastSync);
+        timeEl.innerText = date.toLocaleString();
+    }
+}
+
+async function syncWithGitHub() {
+    const sync = state.settings.githubSync;
+    const token = localStorage.getItem("clubhouse_github_token");
+    
+    if (!sync || !sync.enabled || !token) {
+        return Promise.reject("Sync is not enabled or credentials are missing.");
+    }
+    
+    const url = `https://api.github.com/repos/${sync.username}/${sync.repo}/contents/scores.json`;
+    const headers = {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+    };
+    
+    // 1. Pull current file from GitHub
+    let cloudData = null;
+    let fileSha = null;
+    
+    try {
+        const res = await fetch(url, { headers });
+        if (res.status === 200) {
+            const data = await res.json();
+            fileSha = data.sha;
+            const contentBase64 = data.content.replace(/\s/g, '');
+            const decodedText = decodeURIComponent(escape(atob(contentBase64)));
+            cloudData = JSON.parse(decodedText);
+        } else if (res.status === 404) {
+            cloudData = null;
+        } else if (res.status === 401 || res.status === 403) {
+            return Promise.reject("Access denied. Please check your GitHub Personal Access Token.");
+        } else {
+            return Promise.reject(`Server returned status code ${res.status}`);
+        }
+    } catch (err) {
+        return Promise.reject(`Network error contacting GitHub: ${err.message}`);
+    }
+    
+    // 2. Perform merge logic
+    let mergedRounds = [...state.rounds];
+    let mergedCourses = [...state.courses];
+    
+    if (cloudData) {
+        const cloudRounds = cloudData.rounds || [];
+        const cloudCourses = cloudData.courses || [];
+        
+        mergedRounds = mergeRounds(state.rounds, cloudRounds);
+        
+        const localCustom = state.courses.filter(c => c.id.startsWith('crs_'));
+        const cloudCustom = cloudCourses.filter(c => c.id.startsWith('crs_'));
+        const mergedCustom = mergeCourses(localCustom, cloudCustom);
+        const preloaded = state.courses.filter(c => !c.id.startsWith('crs_'));
+        
+        mergedCourses = [...preloaded, ...mergedCustom];
+        
+        state.rounds = mergedRounds;
+        state.courses = mergedCourses;
+        recalculateAll();
+        saveData();
+    }
+    
+    // 3. Push merged data back to GitHub
+    const payload = {
+        rounds: state.rounds,
+        courses: state.courses.filter(c => c.id.startsWith('crs_'))
+    };
+    
+    const payloadText = JSON.stringify(payload, null, 2);
+    const payloadBase64 = btoa(unescape(encodeURIComponent(payloadText)));
+    
+    const putBody = {
+        message: fileSha ? "Sync scores via Clubhouse Golf Handicap App" : "Initialize score file via Clubhouse Golf Handicap App",
+        content: payloadBase64
+    };
+    
+    if (fileSha) {
+        putBody.sha = fileSha;
+    }
+    
+    try {
+        const putRes = await fetch(url, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(putBody)
+        });
+        
+        if (putRes.status === 200 || putRes.status === 201) {
+            state.settings.githubSync.lastSync = new Date().toISOString();
+            saveData();
+            updateSyncTimeDisplay();
+        } else {
+            const errData = await putRes.json();
+            return Promise.reject(`Failed to upload scores: ${errData.message}`);
+        }
+    } catch (err) {
+        return Promise.reject(`Network error during upload: ${err.message}`);
+    }
+    
+    return true;
+}
+
+function mergeRounds(local, cloud) {
+    const map = new Map();
+    cloud.forEach(r => map.set(r.id, r));
+    local.forEach(r => map.set(r.id, r));
+    
+    const merged = Array.from(map.values());
+    merged.sort((a, b) => new Date(a.date) - new Date(b.date));
+    return merged;
+}
+
+function mergeCourses(local, cloud) {
+    const map = new Map();
+    cloud.forEach(c => map.set(c.id, c));
+    local.forEach(c => map.set(c.id, c));
+    return Array.from(map.values());
+}
+
+function triggerSyncIfEnabled() {
+    if (state.settings.githubSync && state.settings.githubSync.enabled) {
+        syncWithGitHub().catch(err => console.error("Background sync failed:", err));
     }
 }

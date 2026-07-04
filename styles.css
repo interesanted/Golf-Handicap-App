@@ -1026,16 +1026,29 @@ select {
 }
 
 .tee-builder-row {
-    display: grid;
-    grid-template-columns: 3fr 1.5fr 2fr 2fr 0.5fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.4rem;
     align-items: center;
+    background: rgba(0,0,0,0.02);
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
 }
 
-.tee-builder-row input[type="text"],
+.tee-builder-row input[type="text"] {
+    flex: 1 1 100%; /* Take full width for name */
+    min-width: 120px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
 .tee-builder-row input[type="number"] {
-    padding: 0.5rem 0.4rem;
-    font-size: 0.85rem;
+    flex: 1 1 20%; /* Share space for numbers */
+    min-width: 60px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .btn-remove-tee {

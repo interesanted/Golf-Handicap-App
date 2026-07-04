@@ -161,6 +161,22 @@
       "calculationNotes": "WHS 2024: 9-Hole Diff (8.6) + Expected Diff (9.5) based on Handicap Index of 15.9"
     },
     {
+      "id": "rnd_1783191594798_s5xbb",
+      "courseId": "rosecity",
+      "courseName": "Rose City Golf Course",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 40,
+      "rating": 35.9,
+      "slope": 123,
+      "par": 37,
+      "date": "2025-05-21",
+      "counting": true,
+      "differential": 13.2,
+      "runningHandicap": 14.9,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (3.8) + Expected Diff (9.5) based on Handicap Index of 15.9"
+    },
+    {
       "id": "rnd_1783190779632_wirt9",
       "courseId": "rosecity",
       "courseName": "Rose City Golf Course",
@@ -173,7 +189,7 @@
       "date": "2025-05-30",
       "counting": false,
       "differential": 16.8,
-      "runningHandicap": 15.9,
+      "runningHandicap": 15.2,
       "calculationNotes": "18-Hole round. Differential calculated directly."
     },
     {
@@ -188,9 +204,9 @@
       "par": 36,
       "date": "2025-06-19",
       "counting": true,
-      "differential": 14.8,
-      "runningHandicap": 15.6,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (9.5) based on Handicap Index of 15.9"
+      "differential": 14.4,
+      "runningHandicap": 14.8,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (9.1) based on Handicap Index of 15.2"
     },
     {
       "id": "rnd_1783191303385_m03eq",
@@ -204,9 +220,9 @@
       "par": 36,
       "date": "2025-07-03",
       "counting": false,
-      "differential": 18.1,
-      "runningHandicap": 15.6,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (8.8) + Expected Diff (9.3) based on Handicap Index of 15.6"
+      "differential": 17.7,
+      "runningHandicap": 14.8,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (8.8) + Expected Diff (8.9) based on Handicap Index of 14.8"
     },
     {
       "id": "rnd_1783190433908_6ji6u",
@@ -221,7 +237,7 @@
       "date": "2025-08-20",
       "counting": true,
       "differential": 14.1,
-      "runningHandicap": 15.1,
+      "runningHandicap": 14.6,
       "calculationNotes": "18-Hole round. Differential calculated directly."
     },
     {
@@ -236,9 +252,9 @@
       "par": 36,
       "date": "2025-09-05",
       "counting": false,
-      "differential": 15.2,
-      "runningHandicap": 15.1,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (6.2) + Expected Diff (9.1) based on Handicap Index of 15.1"
+      "differential": 15,
+      "runningHandicap": 14.5,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (6.2) + Expected Diff (8.8) based on Handicap Index of 14.6"
     },
     {
       "id": "rnd_1783191363448_iazgu",
@@ -252,9 +268,9 @@
       "par": 36,
       "date": "2025-10-23",
       "counting": true,
-      "differential": 10.8,
-      "runningHandicap": 14.1,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (9.1) based on Handicap Index of 15.1"
+      "differential": 10.5,
+      "runningHandicap": 13.8,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (8.7) based on Handicap Index of 14.5"
     },
     {
       "id": "rnd_1783191393286_a3m4p",
@@ -267,10 +283,10 @@
       "slope": 128,
       "par": 36,
       "date": "2026-04-30",
-      "counting": true,
-      "differential": 14.7,
-      "runningHandicap": 14.2,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (6.2) + Expected Diff (8.5) based on Handicap Index of 14.1"
+      "counting": false,
+      "differential": 14.6,
+      "runningHandicap": 13.6,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (6.2) + Expected Diff (8.4) based on Handicap Index of 13.8"
     },
     {
       "id": "rnd_1782848685293_1i6fa",
@@ -284,9 +300,9 @@
       "par": 36,
       "date": "2026-06-19",
       "counting": true,
-      "differential": 13.9,
-      "runningHandicap": 13.9,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (8.6) based on Handicap Index of 14.2"
+      "differential": 13.6,
+      "runningHandicap": 13.6,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (8.3) based on Handicap Index of 13.6"
     },
     {
       "id": "rnd_1782848585074_429hc",
@@ -300,9 +316,9 @@
       "par": 36,
       "date": "2026-06-25",
       "counting": true,
-      "differential": 10.2,
-      "runningHandicap": 13.4,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (8.4) based on Handicap Index of 13.9"
+      "differential": 10.1,
+      "runningHandicap": 13.2,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (8.3) based on Handicap Index of 13.6"
     },
     {
       "id": "rnd_1782848611316_lfuta",
@@ -316,9 +332,9 @@
       "par": 36,
       "date": "2026-06-25",
       "counting": true,
-      "differential": 12.9,
-      "runningHandicap": 13.3,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.2) based on Handicap Index of 13.4"
+      "differential": 12.7,
+      "runningHandicap": 12.9,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.1) based on Handicap Index of 13.2"
     },
     {
       "id": "rnd_1783024375936_86rfp",
@@ -332,9 +348,9 @@
       "par": 36,
       "date": "2026-07-02",
       "counting": true,
-      "differential": 12.8,
-      "runningHandicap": 13,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.1) based on Handicap Index of 13.3"
+      "differential": 12.6,
+      "runningHandicap": 12.7,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (7.9) based on Handicap Index of 12.9"
     }
   ],
   "courses": []

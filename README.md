@@ -83,3 +83,4 @@ To keep your data automatically synced in real time across your phone and comput
     *   Go to the **Settings** tab, fill in the exact same username, repo, and token, and click **Enable GitHub Sync**.
     *   The app will automatically pull your existing scores, merge them, and keep them synced every time you add, edit, or delete a round!
 
+<!-- Trigger redeploy -->

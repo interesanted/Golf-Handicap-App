@@ -47,6 +47,22 @@
       "differential": 9.4,
       "runningHandicap": 1.6,
       "calculationNotes": "Simple Scaling: 9-Hole Diff (4.7) doubled."
+    },
+    {
+      "id": "rnd_1783024375936_86rfp",
+      "courseId": "mthood-foxglove-pinecone",
+      "courseName": "Mt. Hood Oregon Resort (Foxglove/Pinecone)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 40,
+      "rating": 34.8,
+      "slope": 125,
+      "par": 36,
+      "date": "2026-07-02",
+      "counting": false,
+      "differential": 6.7,
+      "runningHandicap": 2.6,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (2.0) based on Handicap Index of 1.6"
     }
   ],
   "courses": []

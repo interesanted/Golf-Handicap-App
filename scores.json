@@ -353,5 +353,21 @@
       "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (7.9) based on Handicap Index of 12.9"
     }
   ],
-  "courses": []
+  "courses": [
+    {
+      "id": "crs_1783192069326_k6eka",
+      "name": "Wildwood",
+      "location": "St Helens, OR",
+      "tees": [
+        {
+          "name": "Blue",
+          "par": 72,
+          "rating": 68.9,
+          "slope": 124
+        }
+      ],
+      "hasOfficialNine": false,
+      "nineTees": null
+    }
+  ]
 }

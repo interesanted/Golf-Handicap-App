@@ -145,6 +145,22 @@
       "calculationNotes": "WHS 2024: 9-Hole Diff (9.5) + Expected Diff (9.4) based on Handicap Index of 15.8"
     },
     {
+      "id": "rnd_1783190752128_ctnvh",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 46,
+      "rating": 35.9,
+      "slope": 132,
+      "par": 36,
+      "date": "2025-05-14",
+      "counting": false,
+      "differential": 18.1,
+      "runningHandicap": 15.9,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (8.6) + Expected Diff (9.5) based on Handicap Index of 15.9"
+    },
+    {
       "id": "rnd_1783190433908_6ji6u",
       "courseId": "heronlakes-green",
       "courseName": "Heron Lakes Golf Club (Greenback)",
@@ -171,9 +187,9 @@
       "slope": 128,
       "par": 36,
       "date": "2026-06-19",
-      "counting": false,
+      "counting": true,
       "differential": 14.4,
-      "runningHandicap": 14.7,
+      "runningHandicap": 15,
       "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (9.1) based on Handicap Index of 15.2"
     },
     {
@@ -188,9 +204,9 @@
       "par": 36,
       "date": "2026-06-25",
       "counting": true,
-      "differential": 10.6,
+      "differential": 10.8,
       "runningHandicap": 13.7,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (8.8) based on Handicap Index of 14.7"
+      "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (9.0) based on Handicap Index of 15.0"
     },
     {
       "id": "rnd_1782848611316_lfuta",
@@ -205,7 +221,7 @@
       "date": "2026-06-25",
       "counting": true,
       "differential": 13,
-      "runningHandicap": 13,
+      "runningHandicap": 13.1,
       "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.3) based on Handicap Index of 13.7"
     },
     {
@@ -221,8 +237,8 @@
       "date": "2026-07-02",
       "counting": true,
       "differential": 12.7,
-      "runningHandicap": 12.6,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.0) based on Handicap Index of 13.0"
+      "runningHandicap": 13,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.0) based on Handicap Index of 13.1"
     }
   ],
   "courses": []

@@ -129,6 +129,22 @@
       "calculationNotes": "WHS 2024: 9-Hole Diff (10.4) + Expected Diff (9.4) based on Handicap Index of 15.8"
     },
     {
+      "id": "rnd_1783190727686_lpkt2",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 47,
+      "rating": 35.9,
+      "slope": 132,
+      "par": 36,
+      "date": "2025-05-05",
+      "counting": false,
+      "differential": 18.9,
+      "runningHandicap": 15.9,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (9.5) + Expected Diff (9.4) based on Handicap Index of 15.8"
+    },
+    {
       "id": "rnd_1783190433908_6ji6u",
       "courseId": "heronlakes-green",
       "courseName": "Heron Lakes Golf Club (Greenback)",
@@ -173,7 +189,7 @@
       "date": "2026-06-25",
       "counting": true,
       "differential": 10.6,
-      "runningHandicap": 13,
+      "runningHandicap": 13.7,
       "calculationNotes": "WHS 2024: 9-Hole Diff (1.8) + Expected Diff (8.8) based on Handicap Index of 14.7"
     },
     {
@@ -188,9 +204,9 @@
       "par": 36,
       "date": "2026-06-25",
       "counting": true,
-      "differential": 12.6,
-      "runningHandicap": 12.9,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.0) based on Handicap Index of 13.0"
+      "differential": 13,
+      "runningHandicap": 13,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.3) based on Handicap Index of 13.7"
     },
     {
       "id": "rnd_1783024375936_86rfp",
@@ -204,9 +220,9 @@
       "par": 36,
       "date": "2026-07-02",
       "counting": true,
-      "differential": 12.6,
-      "runningHandicap": 12.5,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (7.9) based on Handicap Index of 12.9"
+      "differential": 12.7,
+      "runningHandicap": 12.6,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (8.0) based on Handicap Index of 13.0"
     }
   ],
   "courses": []

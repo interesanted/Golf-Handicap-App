@@ -411,6 +411,33 @@
       ],
       "hasOfficialNine": false,
       "nineTees": null
+    },
+    {
+      "id": "crs_1783210867001_j6u22",
+      "name": "Pumpkin Ridge Golf Club (Ghost Creek) Scorecard in Oregon, Portland/Vancouver",
+      "location": "North Plains, OR",
+      "tees": [
+        {
+          "name": "Black",
+          "par": 71,
+          "rating": 74,
+          "slope": 145
+        },
+        {
+          "name": "Blue",
+          "par": 71,
+          "rating": 72,
+          "slope": 138
+        },
+        {
+          "name": "White",
+          "par": 71,
+          "rating": 69.2,
+          "slope": 131
+        }
+      ],
+      "hasOfficialNine": false,
+      "nineTees": null
     }
   ]
 }

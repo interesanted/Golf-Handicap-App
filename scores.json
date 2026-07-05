@@ -384,6 +384,33 @@
       ],
       "hasOfficialNine": false,
       "nineTees": null
+    },
+    {
+      "id": "crs_1783210767089_t2e5q",
+      "name": "Red Tail",
+      "location": "Beaverton, OR",
+      "tees": [
+        {
+          "name": "Black",
+          "par": 72,
+          "rating": 74.1,
+          "slope": 136
+        },
+        {
+          "name": "Blue",
+          "par": 72,
+          "rating": 72.3,
+          "slope": 128
+        },
+        {
+          "name": "White",
+          "par": 72,
+          "rating": 70.2,
+          "slope": 123
+        }
+      ],
+      "hasOfficialNine": false,
+      "nineTees": null
     }
   ]
 }

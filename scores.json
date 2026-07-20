@@ -367,6 +367,22 @@
       "differential": 12.6,
       "runningHandicap": 12.7,
       "calculationNotes": "WHS 2024: 9-Hole Diff (4.7) + Expected Diff (7.9) based on Handicap Index of 12.9"
+    },
+    {
+      "id": "rnd_1784475171587_v63p4",
+      "courseId": "heronlakes-green",
+      "courseName": "Heron Lakes Golf Club (Greenback)",
+      "teeName": "White",
+      "holes": 9,
+      "gross": 43,
+      "rating": 34.9,
+      "slope": 120,
+      "par": 36,
+      "date": "2026-07-19",
+      "counting": false,
+      "differential": 15.4,
+      "runningHandicap": 12.7,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (7.6) + Expected Diff (7.8) based on Handicap Index of 12.7"
     }
   ],
   "courses": [

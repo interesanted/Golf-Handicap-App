@@ -454,6 +454,27 @@
       ],
       "hasOfficialNine": false,
       "nineTees": null
+    },
+    {
+      "id": "crs_1784588039915_ny4vt",
+      "name": "Alpine Meadows Golf Club",
+      "location": "Enterprise, OR",
+      "tees": [
+        {
+          "name": "White",
+          "par": 36,
+          "rating": 65.3,
+          "slope": 104
+        },
+        {
+          "name": "Black",
+          "par": 36,
+          "rating": 68.3,
+          "slope": 110
+        }
+      ],
+      "hasOfficialNine": false,
+      "nineTees": null
     }
   ]
 }

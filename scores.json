@@ -383,6 +383,22 @@
       "differential": 15.4,
       "runningHandicap": 12.7,
       "calculationNotes": "WHS 2024: 9-Hole Diff (7.6) + Expected Diff (7.8) based on Handicap Index of 12.7"
+    },
+    {
+      "id": "rnd_1784744763984_itdlq",
+      "courseId": "crs_1784588039915_ny4vt",
+      "courseName": "Alpine Meadows Golf Club",
+      "teeName": "Black",
+      "holes": 18,
+      "gross": 85,
+      "rating": 68.3,
+      "slope": 110,
+      "par": 36,
+      "date": "2026-07-22",
+      "counting": false,
+      "differential": 17.2,
+      "runningHandicap": 12.7,
+      "calculationNotes": "18-Hole round. Differential calculated directly."
     }
   ],
   "courses": [

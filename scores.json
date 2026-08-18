@@ -491,6 +491,21 @@
       ],
       "hasOfficialNine": false,
       "nineTees": null
+    },
+    {
+      "id": "crs_1787041605011_gk4wh",
+      "name": "Slishan Links",
+      "location": "Gleneden Beach",
+      "tees": [
+        {
+          "name": "Players",
+          "par": 71,
+          "rating": 70.9,
+          "slope": 132
+        }
+      ],
+      "hasOfficialNine": false,
+      "nineTees": null
     }
   ]
 }

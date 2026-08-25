@@ -219,7 +219,7 @@
       "slope": 128,
       "par": 36,
       "date": "2025-06-19",
-      "counting": true,
+      "counting": false,
       "differential": 14.4,
       "runningHandicap": 14.8,
       "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (9.1) based on Handicap Index of 15.2"
@@ -399,6 +399,22 @@
       "differential": 17.2,
       "runningHandicap": 12.7,
       "calculationNotes": "18-Hole round. Differential calculated directly."
+    },
+    {
+      "id": "rnd_1787627153583_lb30s",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 43,
+      "rating": 35.9,
+      "slope": 132,
+      "par": 36,
+      "date": "2026-08-25",
+      "counting": true,
+      "differential": 13.9,
+      "runningHandicap": 12.6,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (6.1) + Expected Diff (7.8) based on Handicap Index of 12.7"
     }
   ],
   "courses": [

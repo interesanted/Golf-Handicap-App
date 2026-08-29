@@ -251,7 +251,7 @@
       "slope": 128,
       "par": 72,
       "date": "2025-08-20",
-      "counting": true,
+      "counting": false,
       "differential": 14.1,
       "runningHandicap": 14.6,
       "calculationNotes": "18-Hole round. Differential calculated directly."
@@ -415,6 +415,22 @@
       "differential": 13.9,
       "runningHandicap": 12.6,
       "calculationNotes": "WHS 2024: 9-Hole Diff (6.1) + Expected Diff (7.8) based on Handicap Index of 12.7"
+    },
+    {
+      "id": "rnd_1788032653648_cqf1e",
+      "courseId": "crs_1787041605011_gk4wh",
+      "courseName": "Slishan Links",
+      "teeName": "Players",
+      "holes": 18,
+      "gross": 81,
+      "rating": 70.9,
+      "slope": 132,
+      "par": 71,
+      "date": "2026-08-29",
+      "counting": true,
+      "differential": 8.6,
+      "runningHandicap": 11.9,
+      "calculationNotes": "18-Hole round. Differential calculated directly."
     }
   ],
   "courses": [

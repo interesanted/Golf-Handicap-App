@@ -431,6 +431,22 @@
       "differential": 8.6,
       "runningHandicap": 11.9,
       "calculationNotes": "18-Hole round. Differential calculated directly."
+    },
+    {
+      "id": "rnd_1789759456804_umkh3",
+      "courseId": "crs_1783192069326_k6eka",
+      "courseName": "Wildwood",
+      "teeName": "Blue",
+      "holes": 18,
+      "gross": 88,
+      "rating": 68.9,
+      "slope": 124,
+      "par": 72,
+      "date": "2026-09-18",
+      "counting": false,
+      "differential": 17.4,
+      "runningHandicap": 11.9,
+      "calculationNotes": "18-Hole round. Differential calculated directly."
     }
   ],
   "courses": [

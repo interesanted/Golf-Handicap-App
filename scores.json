@@ -503,14 +503,14 @@
       "teeName": "Blue",
       "holes": 9,
       "gross": 39,
-      "rating": 67.9,
+      "rating": 34,
       "slope": 118,
       "par": 35,
       "date": "2026-10-23",
       "counting": true,
-      "differential": -20.5,
-      "runningHandicap": 7.1,
-      "calculationNotes": "WHS 2024: 9-Hole Diff (-27.7) + Expected Diff (7.1) based on Handicap Index of 11.4"
+      "differential": 11.9,
+      "runningHandicap": 11.1,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (4.8) + Expected Diff (7.1) based on Handicap Index of 11.4"
     }
   ],
   "courses": [
@@ -636,7 +636,7 @@
         {
           "name": "Blue",
           "par": 35,
-          "rating": 67.9,
+          "rating": 34,
           "slope": 118
         }
       ]

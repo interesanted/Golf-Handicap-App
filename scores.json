@@ -171,7 +171,7 @@
       "slope": 123,
       "par": 37,
       "date": "2025-05-21",
-      "counting": true,
+      "counting": false,
       "differential": 13.2,
       "runningHandicap": 14.9,
       "calculationNotes": "WHS 2024: 9-Hole Diff (3.8) + Expected Diff (9.5) based on Handicap Index of 15.9"
@@ -315,7 +315,7 @@
       "slope": 128,
       "par": 36,
       "date": "2026-06-19",
-      "counting": true,
+      "counting": false,
       "differential": 13.7,
       "runningHandicap": 13.9,
       "calculationNotes": "WHS 2024: 9-Hole Diff (5.3) + Expected Diff (8.4) based on Handicap Index of 13.9"
@@ -411,7 +411,7 @@
       "slope": 132,
       "par": 36,
       "date": "2026-08-25",
-      "counting": true,
+      "counting": false,
       "differential": 13.9,
       "runningHandicap": 12.6,
       "calculationNotes": "WHS 2024: 9-Hole Diff (6.1) + Expected Diff (7.8) based on Handicap Index of 12.7"
@@ -447,6 +447,70 @@
       "differential": 17.4,
       "runningHandicap": 11.9,
       "calculationNotes": "18-Hole round. Differential calculated directly."
+    },
+    {
+      "id": "rnd_1790623900318_lvexc",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "White",
+      "holes": 9,
+      "gross": 46,
+      "rating": 34.9,
+      "slope": 125,
+      "par": 36,
+      "date": "2026-09-26",
+      "counting": false,
+      "differential": 17.4,
+      "runningHandicap": 11.9,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (10.0) + Expected Diff (7.4) based on Handicap Index of 11.9"
+    },
+    {
+      "id": "rnd_1790817809434_ypeyl",
+      "courseId": "heronlakes-blue",
+      "courseName": "Heron Lakes Golf Club (Great Blue)",
+      "teeName": "Blue",
+      "holes": 18,
+      "gross": 83,
+      "rating": 71.8,
+      "slope": 132,
+      "par": 72,
+      "date": "2026-10-01",
+      "counting": true,
+      "differential": 9.6,
+      "runningHandicap": 11.4,
+      "calculationNotes": "18-Hole round. Differential calculated directly."
+    },
+    {
+      "id": "rnd_1792631772106_a1noe",
+      "courseId": "heronlakes-green",
+      "courseName": "Heron Lakes Golf Club (Greenback)",
+      "teeName": "White",
+      "holes": 9,
+      "gross": 41,
+      "rating": 34.9,
+      "slope": 120,
+      "par": 36,
+      "date": "2026-10-22",
+      "counting": true,
+      "differential": 12.9,
+      "runningHandicap": 11.4,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (5.7) + Expected Diff (7.1) based on Handicap Index of 11.4"
+    },
+    {
+      "id": "rnd_1792717850315_cstrb",
+      "courseId": "crs_1791495587732_og8tg",
+      "courseName": "Fairway Village",
+      "teeName": "Blue",
+      "holes": 9,
+      "gross": 39,
+      "rating": 67.9,
+      "slope": 118,
+      "par": 35,
+      "date": "2026-10-23",
+      "counting": true,
+      "differential": -20.5,
+      "runningHandicap": 7.1,
+      "calculationNotes": "WHS 2024: 9-Hole Diff (-27.7) + Expected Diff (7.1) based on Handicap Index of 11.4"
     }
   ],
   "courses": [
@@ -554,6 +618,28 @@
       ],
       "hasOfficialNine": false,
       "nineTees": null
+    },
+    {
+      "id": "crs_1791495587732_og8tg",
+      "name": "Fairway Village",
+      "location": "Vancouver, WA",
+      "tees": [
+        {
+          "name": "Blue",
+          "par": 70,
+          "rating": 67.9,
+          "slope": 118
+        }
+      ],
+      "hasOfficialNine": true,
+      "nineTees": [
+        {
+          "name": "Blue",
+          "par": 35,
+          "rating": 67.9,
+          "slope": 118
+        }
+      ]
     }
   ]
 }

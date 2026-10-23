@@ -507,14 +507,14 @@ function renderDashboard() {
             const countingStr = round.counting ? '<span class="badge badge-counting">Yes</span>' : 'No';
             
             tr.innerHTML = `
-                <td>${dateStr}</td>
-                <td><strong>${round.courseName}</strong><br><small style="color:var(--text-secondary)">Tee: ${round.teeName}</small></td>
-                <td>${round.gross}</td>
-                <td>${ratingSlope}</td>
-                <td><strong>${round.differential.toFixed(1)}</strong></td>
-                <td>${typeStr}</td>
-                <td>${countingStr}</td>
-                <td>
+                <td data-label="Date">${dateStr}</td>
+                <td data-label="Course" class="td-course-cell"><strong>${round.courseName}</strong><br><small style="color:var(--text-secondary)">Tee: ${round.teeName}</small></td>
+                <td data-label="Score"><strong>${round.gross}</strong></td>
+                <td data-label="Rating / Slope">${ratingSlope}</td>
+                <td data-label="Differential"><strong class="diff-highlight">${round.differential.toFixed(1)}</strong></td>
+                <td data-label="Type">${typeStr}</td>
+                <td data-label="Counting">${countingStr}</td>
+                <td data-label="Actions" class="td-actions-cell">
                     <div class="row-actions">
                         <button type="button" class="btn-row-action btn-row-edit" onclick="openEditModal(${originalIndex})" title="Edit Round">✏️ Edit</button>
                     </div>
@@ -558,16 +558,16 @@ function renderHistoryTable() {
         const countingStr = round.counting ? '<span class="badge badge-counting">Yes</span>' : 'No';
         
         tr.innerHTML = `
-            <td>${state.rounds.length - originalIndex}</td>
-            <td>${dateStr}</td>
-            <td><strong>${round.courseName}</strong></td>
-            <td>${round.teeName}</td>
-            <td>${typeStr}</td>
-            <td>${round.gross}</td>
-            <td>${ratingSlopeStr}</td>
-            <td><strong>${round.differential.toFixed(1)}</strong><br><small style="color:var(--text-secondary);font-size:0.7rem">${round.runningHandicap !== null ? 'HCIP: ' + round.runningHandicap.toFixed(1) : 'HCIP: --'}</small></td>
-            <td>${countingStr}</td>
-            <td>
+            <td data-label="Round #">#${state.rounds.length - originalIndex}</td>
+            <td data-label="Date">${dateStr}</td>
+            <td data-label="Course" class="td-course-cell"><strong>${round.courseName}</strong></td>
+            <td data-label="Tee">${round.teeName}</td>
+            <td data-label="Holes">${typeStr}</td>
+            <td data-label="Gross Score"><strong>${round.gross}</strong></td>
+            <td data-label="Rating / Slope">${ratingSlopeStr}</td>
+            <td data-label="Differential"><strong class="diff-highlight">${round.differential.toFixed(1)}</strong><br><small style="color:var(--text-secondary);font-size:0.7rem">${round.runningHandicap !== null ? 'HCIP: ' + round.runningHandicap.toFixed(1) : 'HCIP: --'}</small></td>
+            <td data-label="Counting">${countingStr}</td>
+            <td data-label="Actions" class="td-actions-cell">
                 <div class="row-actions">
                     <button type="button" class="btn-row-action btn-row-edit" onclick="openEditModal(${originalIndex})" title="Edit Round">✏️ Edit</button>
                     <button type="button" class="btn-row-action btn-row-delete" onclick="deleteRound(${originalIndex})" title="Delete Round">🗑️ Delete</button>
@@ -1097,6 +1097,17 @@ function wireTeeRowEvents(row, containerId = "tees-builder") {
     }
 }
 
+function scrollToCourseEditor() {
+    resetCourseForm();
+    const editorCard = document.getElementById("course-editor-card");
+    if (editorCard) {
+        editorCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setTimeout(() => {
+        document.getElementById("course-name")?.focus();
+    }, 300);
+}
+
 function addTeeBuilderRow(containerId = "tees-builder", teeData = null) {
     const builder = document.getElementById(containerId);
     const div = document.createElement("div");
@@ -1114,9 +1125,9 @@ function addTeeBuilderRow(containerId = "tees-builder", teeData = null) {
             <span class="tee-row-dot" style="background-color: ${dotColor};"></span>
             <input type="text" class="tee-name-input" placeholder="e.g. White" value="${tName}" required>
         </div>
-        <input type="number" class="tee-par-input" placeholder="Par" value="${tPar}" min="20" max="80" required>
-        <input type="number" class="tee-rating-input" placeholder="70.5" value="${tRating}" step="0.1" min="25" max="85" required>
-        <input type="number" class="tee-slope-input" placeholder="120" value="${tSlope}" min="55" max="155" required>
+        <input type="number" class="tee-par-input" inputmode="numeric" aria-label="Par" placeholder="Par" value="${tPar}" min="20" max="80" required>
+        <input type="number" class="tee-rating-input" inputmode="decimal" aria-label="Course Rating" placeholder="70.5" value="${tRating}" step="0.1" min="25" max="85" required>
+        <input type="number" class="tee-slope-input" inputmode="numeric" aria-label="Slope Rating" placeholder="120" value="${tSlope}" min="55" max="155" required>
         <button type="button" class="btn btn-remove-tee" title="Remove Tee">&times;</button>
     `;
     
@@ -1243,9 +1254,9 @@ function syncNineTeeRows(nineTeesData = null) {
                 <span class="tee-row-dot" style="background-color: ${dotColor};"></span>
                 <input type="text" class="tee-name-input disabled-input" value="${teeName}" readonly>
             </div>
-            <input type="number" class="tee-par-input" placeholder="36" value="${initPar}" min="10" max="45" required>
-            <input type="number" class="tee-rating-input" placeholder="35.5" value="${initRating}" step="0.1" min="12" max="45" required>
-            <input type="number" class="tee-slope-input" placeholder="120" value="${initSlope}" min="55" max="155" required>
+            <input type="number" class="tee-par-input" inputmode="numeric" aria-label="9-Hole Par" placeholder="36" value="${initPar}" min="10" max="45" required>
+            <input type="number" class="tee-rating-input" inputmode="decimal" aria-label="9-Hole Rating" placeholder="35.5" value="${initRating}" step="0.1" min="12" max="45" required>
+            <input type="number" class="tee-slope-input" inputmode="numeric" aria-label="9-Hole Slope" placeholder="120" value="${initSlope}" min="55" max="155" required>
             <span style="width:24px"></span>
         `;
         nineTeesBuilder.appendChild(div);

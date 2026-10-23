@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1e4d3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Clubhouse">
     <title>Clubhouse Golf Handicap Tracker</title>
     <meta name="description" content="A free, premium, easy-to-use golf handicap tracker for the Pacific Northwest and Portland Metro area.">
     <!-- Google Fonts: Outfit for modern UI, Playfair Display for elegant headings -->
@@ -39,21 +43,26 @@
         </div>
         
         <!-- Navigation Tabs -->
-        <nav class="nav-tabs">
+        <nav class="nav-tabs" aria-label="Main Navigation">
             <button class="tab-btn active" data-tab="dashboard-view">
-                <span class="tab-icon">📊</span> Dashboard
+                <span class="tab-icon">📊</span>
+                <span class="tab-label">Dashboard</span>
             </button>
             <button class="tab-btn" data-tab="post-score-view">
-                <span class="tab-icon">✏️</span> Post Score
+                <span class="tab-icon">✏️</span>
+                <span class="tab-label">Post Score</span>
             </button>
             <button class="tab-btn" data-tab="history-view">
-                <span class="tab-icon">📜</span> Score History
+                <span class="tab-icon">📜</span>
+                <span class="tab-label">History</span>
             </button>
             <button class="tab-btn" data-tab="courses-view">
-                <span class="tab-icon">🌲</span> Course Directory
+                <span class="tab-icon">🌲</span>
+                <span class="tab-label">Courses</span>
             </button>
             <button class="tab-btn" data-tab="settings-view">
-                <span class="tab-icon">⚙️</span> Settings
+                <span class="tab-icon">⚙️</span>
+                <span class="tab-label">Settings</span>
             </button>
         </nav>
     </header>
@@ -198,15 +207,15 @@
                                     <div class="input-grid">
                                         <div class="form-group-sub">
                                             <label for="manual-rating">9-Hole Rating</label>
-                                            <input type="number" id="manual-rating" step="0.1" placeholder="e.g. 35.5">
+                                            <input type="number" id="manual-rating" inputmode="decimal" step="0.1" placeholder="e.g. 35.5">
                                         </div>
                                         <div class="form-group-sub">
                                             <label for="manual-slope">9-Hole Slope</label>
-                                            <input type="number" id="manual-slope" placeholder="e.g. 120">
+                                            <input type="number" id="manual-slope" inputmode="numeric" placeholder="e.g. 120">
                                         </div>
                                         <div class="form-group-sub">
                                             <label for="manual-par">9-Hole Par</label>
-                                            <input type="number" id="manual-par" placeholder="e.g. 36">
+                                            <input type="number" id="manual-par" inputmode="numeric" placeholder="e.g. 36">
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +228,7 @@
                                 <label for="score-gross">Adjusted Gross Score</label>
                                 <span class="info-tooltip" title="For handicap purposes, your maximum score on any hole is capped at a Net Double Bogey (Par + 2 + any handicap strokes you get on that hole). If you blew up on a hole, adjust your total score down accordingly before entering.">❓ How to adjust?</span>
                             </div>
-                            <input type="number" id="score-gross" min="20" max="200" placeholder="e.g. 85" required>
+                            <input type="number" id="score-gross" inputmode="numeric" min="20" max="200" placeholder="e.g. 85" required>
                             <div class="diff-preview-badge" id="score-diff-preview" style="display: none;">
                                 Estimated Score Differential: <strong id="score-diff-preview-val">--.-</strong>
                             </div>
@@ -283,7 +292,10 @@
                 <!-- Preloaded & Custom Course Directory -->
                 <div class="card courses-list-card">
                     <div class="card-header">
-                        <h2>Course Directory</h2>
+                        <div class="courses-header-title-row">
+                            <h2>Course Directory</h2>
+                            <button type="button" class="btn btn-primary btn-sm mobile-only-add-course-btn" onclick="scrollToCourseEditor()">+ Add Course</button>
+                        </div>
                         <div class="search-box">
                             <input type="text" id="course-search" placeholder="Search courses...">
                             <span class="search-icon">🔍</span>
@@ -364,9 +376,9 @@
                                         <span class="tee-row-dot" style="background-color: #0056b3;"></span>
                                         <input type="text" class="tee-name-input" placeholder="e.g. Blue" required>
                                     </div>
-                                    <input type="number" class="tee-par-input" placeholder="Par" value="72" min="20" max="80" required>
-                                    <input type="number" class="tee-rating-input" placeholder="71.2" step="0.1" min="25" max="85" required>
-                                    <input type="number" class="tee-slope-input" placeholder="125" min="55" max="155" required>
+                                    <input type="number" class="tee-par-input" inputmode="numeric" aria-label="Par" placeholder="Par" value="72" min="20" max="80" required>
+                                    <input type="number" class="tee-rating-input" inputmode="decimal" aria-label="Course Rating" placeholder="71.2" step="0.1" min="25" max="85" required>
+                                    <input type="number" class="tee-slope-input" inputmode="numeric" aria-label="Slope Rating" placeholder="125" min="55" max="155" required>
                                     <button type="button" class="btn btn-remove-tee" disabled title="Remove Tee">&times;</button>
                                 </div>
                             </div>
@@ -597,15 +609,15 @@
                         <div class="input-grid">
                             <div class="form-group-sub">
                                 <label for="edit-score-rating">Course Rating</label>
-                                <input type="number" id="edit-score-rating" step="0.1" min="20" max="85" required>
+                                <input type="number" id="edit-score-rating" inputmode="decimal" step="0.1" min="20" max="85" required>
                             </div>
                             <div class="form-group-sub">
                                 <label for="edit-score-slope">Slope Rating</label>
-                                <input type="number" id="edit-score-slope" min="55" max="155" required>
+                                <input type="number" id="edit-score-slope" inputmode="numeric" min="55" max="155" required>
                             </div>
                             <div class="form-group-sub">
                                 <label for="edit-score-par">Par</label>
-                                <input type="number" id="edit-score-par" min="18" max="80" required>
+                                <input type="number" id="edit-score-par" inputmode="numeric" min="18" max="80" required>
                             </div>
                         </div>
                     </div>
@@ -613,7 +625,7 @@
                     <div class="form-row-2col">
                         <div class="form-group">
                             <label for="edit-score-gross">Adjusted Gross Score</label>
-                            <input type="number" id="edit-score-gross" min="20" max="200" required>
+                            <input type="number" id="edit-score-gross" inputmode="numeric" min="20" max="200" required>
                         </div>
 
                         <div class="form-group">

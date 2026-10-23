@@ -159,6 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Initial Handicap & UI Updates
     recalculateAll();
+    renderDashboard();
+    renderHistoryTable();
     
     // Set default date to today
     document.getElementById("score-date").valueAsDate = new Date();
@@ -1569,6 +1571,8 @@ function initCourseFormListeners() {
                         }
                     });
                     recalculateAll();
+                    renderDashboard();
+                    renderHistoryTable();
                 }
             }
         } else {
@@ -1862,6 +1866,8 @@ function initSettingsListeners() {
         state.settings.nineHoleMethod = methodSelect.value;
         recalculateAll();
         saveData();
+        renderDashboard();
+        renderHistoryTable();
     });
 
     overrideInput.addEventListener("input", () => {
@@ -1869,6 +1875,8 @@ function initSettingsListeners() {
         state.settings.initialIndex = val !== "" ? parseFloat(val) : null;
         recalculateAll();
         saveData();
+        renderDashboard();
+        renderHistoryTable();
     });
 
     // Reset App Data
@@ -2294,6 +2302,9 @@ async function syncWithGitHub(preferLocal = false) {
         recalculateAll();
         saveData();
         populateCourseSelects();
+        renderDashboard();
+        renderHistoryTable();
+        renderCourseDirectory();
     }
     
     // 3. Push merged data back to GitHub (custom courses + modified preloaded courses)

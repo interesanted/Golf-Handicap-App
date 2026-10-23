@@ -135,11 +135,14 @@ a:hover {
 }
 
 .sub-brand {
+    display: block;
     font-size: 0.75rem;
+    line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--text-secondary);
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .handicap-badge-container {

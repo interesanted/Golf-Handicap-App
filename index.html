@@ -119,11 +119,12 @@
                                 <th>Differential</th>
                                 <th>Type</th>
                                 <th title="WHS counts the best 8 of your last 20 score differentials to determine your Handicap Index">Counting</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="recent-rounds-list">
                             <tr>
-                                <td colspan="7" class="empty-state">No rounds logged yet. Post a score to get started!</td>
+                                <td colspan="8" class="empty-state">No rounds logged yet. Post a score to get started!</td>
                             </tr>
                         </tbody>
                     </table>
@@ -149,7 +150,10 @@
                                     <!-- Preloaded and custom courses populated here -->
                                 </select>
                             </div>
-                            <span class="help-action-text" onclick="switchTab('courses-view')">Course not listed? Add custom course &rarr;</span>
+                            <div class="course-help-actions">
+                                <span class="help-action-text" onclick="openAddCourseFromScoreForm()">+ Course not listed? Add custom course &rarr;</span>
+                                <span class="help-action-text" id="btn-edit-selected-course" style="display: none;" onclick="editSelectedCourseFromScoreForm()">✏️ Edit selected course/tees</span>
+                            </div>
                         </div>
 
                         <!-- Select Tees -->
@@ -216,6 +220,9 @@
                                 <span class="info-tooltip" title="For handicap purposes, your maximum score on any hole is capped at a Net Double Bogey (Par + 2 + any handicap strokes you get on that hole). If you blew up on a hole, adjust your total score down accordingly before entering.">❓ How to adjust?</span>
                             </div>
                             <input type="number" id="score-gross" min="20" max="200" placeholder="e.g. 85" required>
+                            <div class="diff-preview-badge" id="score-diff-preview" style="display: none;">
+                                Estimated Score Differential: <strong id="score-diff-preview-val">--.-</strong>
+                            </div>
                         </div>
 
                         <!-- Date Played -->
@@ -288,38 +295,83 @@
                     </div>
                 </div>
 
-                <!-- Add Custom Course Form -->
-                <div class="card add-course-card">
-                    <h2>Add Custom Course</h2>
-                    <p class="form-sub">If your course isn't listed, add it here with its tee boxes, ratings, and slopes.</p>
+                <!-- Add / Edit Course Form -->
+                <div class="card add-course-card" id="course-editor-card">
+                    <div class="course-editor-header">
+                        <div>
+                            <h2 id="course-form-title">Add Custom Course</h2>
+                            <p class="form-sub" id="course-form-sub">Add a new course or click "Edit" on any course in the directory to modify its tees, ratings, and slopes.</p>
+                        </div>
+                        <span class="badge badge-editing" id="course-editing-badge" style="display: none;">Editing Mode</span>
+                    </div>
                     
                     <form id="add-course-form">
-                        <div class="form-group">
-                            <label for="course-name">Course Name</label>
-                            <input type="text" id="course-name" placeholder="e.g. Foxglove at Mt Hood Resort" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="course-location">Location (optional)</label>
-                            <input type="text" id="course-location" placeholder="e.g. Welches, OR">
+                        <input type="hidden" id="edit-course-id" value="">
+
+                        <div class="form-row-2col">
+                            <div class="form-group">
+                                <label for="course-name">Course Name</label>
+                                <input type="text" id="course-name" placeholder="e.g. Foxglove at Mt Hood Resort" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="course-location">Location (optional)</label>
+                                <input type="text" id="course-location" placeholder="e.g. Welches, OR">
+                            </div>
                         </div>
 
                         <!-- Tee configurations list -->
                         <div class="form-group">
-                            <label>Tee Boxes & Ratings</label>
-                            <p class="field-desc">Add at least one set of tees (e.g. Blue, White, Red) with rating and slope.</p>
+                            <div class="tees-section-header">
+                                <div>
+                                    <label>18-Hole Tee Boxes & Ratings</label>
+                                    <p class="field-desc">Use the quick-add presets or customize each tee box below.</p>
+                                </div>
+                                <div class="default-par-control">
+                                    <label for="course-default-par">Default Par:</label>
+                                    <select id="course-default-par" title="Default par when adding new tee rows">
+                                        <option value="70">70</option>
+                                        <option value="71">71</option>
+                                        <option value="72" selected>72</option>
+                                        <option value="73">73</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Quick Preset Buttons -->
+                            <div class="tee-presets-bar">
+                                <span class="preset-label">Quick Add:</span>
+                                <button type="button" class="btn-preset" onclick="quickAddPresetTee('Black')">+ Black</button>
+                                <button type="button" class="btn-preset" onclick="quickAddPresetTee('Blue')">+ Blue</button>
+                                <button type="button" class="btn-preset" onclick="quickAddPresetTee('White')">+ White</button>
+                                <button type="button" class="btn-preset" onclick="quickAddPresetTee('Gold')">+ Gold</button>
+                                <button type="button" class="btn-preset" onclick="quickAddPresetTee('Red (W)')">+ Red (W)</button>
+                                <button type="button" class="btn-preset btn-preset-bundle" onclick="populateStandardTeeSet()" title="Add Blue, White, and Red tee rows">+ Standard 3-Tee Set</button>
+                            </div>
+
+                            <!-- Column Headers for Tees Builder -->
+                            <div class="tee-builder-headers">
+                                <span class="th-tee-name">Tee Name</span>
+                                <span class="th-tee-par">Par</span>
+                                <span class="th-tee-rating">Rating</span>
+                                <span class="th-tee-slope">Slope</span>
+                                <span class="th-tee-del"></span>
+                            </div>
                             
                             <div class="tees-builder" id="tees-builder">
                                 <div class="tee-builder-row default-row">
-                                    <input type="text" class="tee-name-input" placeholder="Tee Name (e.g. Blue)" required>
-                                    <input type="number" class="tee-par-input" placeholder="Par" min="20" max="80" required>
-                                    <input type="number" class="tee-rating-input" placeholder="Rating" step="0.1" required>
-                                    <input type="number" class="tee-slope-input" placeholder="Slope" min="55" max="155" required>
-                                    <button type="button" class="btn btn-remove-tee" disabled>&times;</button>
+                                    <div class="tee-name-cell">
+                                        <span class="tee-row-dot" style="background-color: #0056b3;"></span>
+                                        <input type="text" class="tee-name-input" placeholder="e.g. Blue" required>
+                                    </div>
+                                    <input type="number" class="tee-par-input" placeholder="Par" value="72" min="20" max="80" required>
+                                    <input type="number" class="tee-rating-input" placeholder="71.2" step="0.1" min="25" max="85" required>
+                                    <input type="number" class="tee-slope-input" placeholder="125" min="55" max="155" required>
+                                    <button type="button" class="btn btn-remove-tee" disabled title="Remove Tee">&times;</button>
                                 </div>
                             </div>
                             
-                            <button type="button" class="btn btn-secondary btn-sm" id="btn-add-tee-row">+ Add Another Tee Box</button>
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn-add-tee-row">+ Add Empty Tee Row</button>
                         </div>
 
                         <!-- 9-Hole Specific Ratings Toggle -->
@@ -331,16 +383,35 @@
                         </div>
 
                         <div class="nine-tees-builder-section" id="nine-tees-section" style="display: none;">
-                            <label>Official 9-Hole Tee Ratings</label>
-                            <p class="field-desc">Specify separate 9-hole Course Ratings and Slopes if published.</p>
+                            <div class="tees-section-header">
+                                <div>
+                                    <label>Official 9-Hole Tee Ratings</label>
+                                    <p class="field-desc">Specify published 9-hole Course Ratings and Slopes for each tee.</p>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btn-autofill-9-tees" title="Fill 9-hole fields using 18-hole Rating ÷ 2, same Slope, Par ÷ 2">⚡ Auto-fill from 18-Hole</button>
+                            </div>
+                            <div class="tee-builder-headers">
+                                <span class="th-tee-name">Tee Name</span>
+                                <span class="th-tee-par">9H Par</span>
+                                <span class="th-tee-rating">9H Rating</span>
+                                <span class="th-tee-slope">9H Slope</span>
+                                <span class="th-tee-del"></span>
+                            </div>
                             <div class="tees-builder" id="nine-tees-builder">
                                 <!-- Prepopulated row for 9-hole matching -->
                             </div>
                         </div>
 
+                        <div class="form-group" id="update-existing-rounds-group" style="display: none;">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="update-existing-rounds" checked>
+                                <label for="update-existing-rounds">Update course name &amp; tee ratings on existing logged rounds (<span id="linked-rounds-count">0</span> found)</label>
+                            </div>
+                        </div>
+
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Add Course</button>
-                            <button type="reset" class="btn btn-secondary" id="reset-course-btn">Clear</button>
+                            <button type="submit" class="btn btn-primary" id="btn-submit-course">Add Course</button>
+                            <button type="button" class="btn btn-secondary" id="reset-course-btn">Clear</button>
                         </div>
                     </form>
                 </div>
@@ -479,7 +550,7 @@
 
     <!-- Modal for Editing a Score -->
     <div class="modal-backdrop" id="edit-score-modal" style="display: none;">
-        <div class="modal-container">
+        <div class="modal-container modal-container-lg">
             <div class="modal-header">
                 <h2>Edit Round</h2>
                 <button type="button" class="btn-close-modal" id="btn-close-edit-modal">&times;</button>
@@ -489,28 +560,70 @@
                     <input type="hidden" id="edit-score-index">
                     
                     <div class="form-group">
-                        <label for="edit-score-course">Course</label>
-                        <input type="text" id="edit-score-course" disabled class="disabled-input">
+                        <label for="edit-score-course">Golf Course</label>
+                        <div class="select-wrapper">
+                            <select id="edit-score-course" required></select>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="edit-score-tee">Tee Box</label>
-                        <input type="text" id="edit-score-tee" disabled class="disabled-input">
+                    <div class="form-row-2col">
+                        <div class="form-group">
+                            <label for="edit-score-tee">Tee Box</label>
+                            <div class="select-wrapper">
+                                <select id="edit-score-tee" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Round Type</label>
+                            <div class="toggle-buttons">
+                                <label class="toggle-btn-label">
+                                    <input type="radio" name="edit-score-holes" value="18" id="edit-holes-18">
+                                    <span>18 Holes</span>
+                                </label>
+                                <label class="toggle-btn-label">
+                                    <input type="radio" name="edit-score-holes" value="9" id="edit-holes-9">
+                                    <span>9 Holes</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Round Type</label>
-                        <input type="text" id="edit-score-holes" disabled class="disabled-input">
+                    <div class="edit-parameters-box">
+                        <div class="edit-parameters-header">
+                            <span>Tee Rating &amp; Slope Parameters</span>
+                            <button type="button" class="btn-text btn-xs" id="btn-reset-edit-params" title="Reset Rating, Slope, and Par to selected Tee Box defaults">↺ Reset to Tee Default</button>
+                        </div>
+                        <div class="input-grid">
+                            <div class="form-group-sub">
+                                <label for="edit-score-rating">Course Rating</label>
+                                <input type="number" id="edit-score-rating" step="0.1" min="20" max="85" required>
+                            </div>
+                            <div class="form-group-sub">
+                                <label for="edit-score-slope">Slope Rating</label>
+                                <input type="number" id="edit-score-slope" min="55" max="155" required>
+                            </div>
+                            <div class="form-group-sub">
+                                <label for="edit-score-par">Par</label>
+                                <input type="number" id="edit-score-par" min="18" max="80" required>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="edit-score-gross">Adjusted Gross Score</label>
-                        <input type="number" id="edit-score-gross" min="20" max="200" required>
+                    <div class="form-row-2col">
+                        <div class="form-group">
+                            <label for="edit-score-gross">Adjusted Gross Score</label>
+                            <input type="number" id="edit-score-gross" min="20" max="200" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-score-date">Date Played</label>
+                            <input type="date" id="edit-score-date" required>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="edit-score-date">Date Played</label>
-                        <input type="date" id="edit-score-date" required>
+                    <div class="diff-preview-badge" id="edit-score-diff-preview">
+                        Updated Score Differential: <strong id="edit-score-diff-val">--.-</strong>
                     </div>
 
                     <div class="modal-actions">

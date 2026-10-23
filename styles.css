@@ -965,14 +965,49 @@ select {
     transition: all 0.2s;
 }
 
+.course-card.editing-active {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(197, 155, 72, 0.25);
+    background-color: var(--accent-light);
+}
+
 .course-card:hover {
     border-color: var(--primary-color);
     box-shadow: 0 4px 16px rgba(30, 77, 58, 0.03);
 }
 
+.course-info {
+    flex: 1;
+}
+
+.course-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+}
+
 .course-info h3 {
     font-size: 1.15rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
+}
+
+.course-badge-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.1rem 0.45rem;
+    border-radius: 10px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.course-badge-custom {
+    background-color: var(--accent-light);
+    color: var(--accent-color);
+    border: 1px solid var(--border-color);
 }
 
 .course-loc {
@@ -1000,21 +1035,181 @@ select {
     gap: 0.3rem;
 }
 
-.tee-color-dot {
-    width: 8px;
-    height: 8px;
+.tee-color-dot,
+.tee-row-dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.25);
+    flex-shrink: 0;
 }
 
-.btn-delete-course {
-    opacity: 0.3;
-    transition: opacity 0.2s;
+.course-card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.course-action-row {
+    display: flex;
+    gap: 0.35rem;
+}
+
+/* Course Editor Enhancements */
+.course-help-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.diff-preview-badge {
+    margin-top: 0.35rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.diff-preview-badge strong {
+    color: var(--primary-color);
     font-size: 1rem;
 }
 
-.course-card:hover .btn-delete-course {
-    opacity: 1;
+.course-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.badge-editing {
+    background-color: var(--accent-light);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    white-space: nowrap;
+}
+
+.add-course-card.is-editing {
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 30px rgba(197, 155, 72, 0.12);
+}
+
+.form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .form-row-2col {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+.tees-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.default-par-control {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.default-par-control label {
+    font-size: 0.75rem !important;
+    color: var(--text-secondary) !important;
+    white-space: nowrap;
+}
+
+.default-par-control select {
+    width: auto;
+    padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.tee-presets-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.65rem;
+    background-color: var(--bg-color);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 0.25rem;
+}
+
+.preset-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 0.25rem;
+}
+
+.btn-preset {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-preset:hover {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.btn-preset-bundle {
+    background-color: var(--accent-light);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.btn-preset-bundle:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+.tee-builder-headers {
+    display: grid;
+    grid-template-columns: minmax(110px, 1.8fr) 0.8fr 1fr 1fr 28px;
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+}
+
+.tee-builder-headers span:not(.th-tee-name) {
+    text-align: center;
 }
 
 /* Tees Builder (Forms) */
@@ -1026,29 +1221,42 @@ select {
 }
 
 .tee-builder-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(110px, 1.8fr) 0.8fr 1fr 1fr 28px;
     gap: 0.4rem;
     align-items: center;
     background: rgba(0,0,0,0.02);
-    padding: 0.5rem;
+    padding: 0.45rem 0.5rem;
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--border-color);
 }
 
+.tee-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+}
+
 .tee-builder-row input[type="text"] {
-    flex: 1 1 100%; /* Take full width for name */
-    min-width: 120px;
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    width: 100%;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.88rem;
 }
 
 .tee-builder-row input[type="number"] {
-    flex: 1 1 20%; /* Share space for numbers */
-    min-width: 60px;
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    width: 100%;
+    padding: 0.45rem 0.35rem;
+    font-size: 0.88rem;
     text-align: center;
+}
+
+.nine-tees-builder-section {
+    background-color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .btn-remove-tee {
@@ -1056,7 +1264,7 @@ select {
     border: none;
     color: var(--danger-color);
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -1199,8 +1407,36 @@ select {
     box-shadow: 0 15px 50px rgba(0,0,0,0.15);
     width: 100%;
     max-width: 500px;
-    overflow: hidden;
+    max-height: 92vh;
+    overflow-y: auto;
     animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-container-lg {
+    max-width: 580px;
+}
+
+.edit-parameters-box {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.edit-parameters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.btn-xs {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
 }
 
 @keyframes zoomIn {

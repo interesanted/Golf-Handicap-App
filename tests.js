@@ -112,6 +112,23 @@ function runHandicapTests() {
         assert(false, `Handicap bound cap failed with error: ${e.message}`);
     }
 
+    // --- TEST 9: COURSE MERGE WITH MODIFIED PRELOADED COURSE ---
+    try {
+        const localCourses = [
+            { id: "rosecity", name: "Rose City (Edited)", tees: [], isModified: true },
+            { id: "crs_1", name: "Custom 1", tees: [] }
+        ];
+        const cloudCourses = [
+            { id: "rosecity", name: "Rose City Golf Course", tees: [] },
+            { id: "crs_2", name: "Custom 2", tees: [] }
+        ];
+        const merged = mergeCourses(localCourses, cloudCourses);
+        const rose = merged.find(c => c.id === "rosecity");
+        assert(rose && rose.name === "Rose City (Edited)" && merged.length === 3, "Course merge preserves modified preloaded courses and merges cloud custom courses");
+    } catch (e) {
+        assert(false, `Course merge test failed with error: ${e.message}`);
+    }
+
     console.groupEnd();
     console.log(`%cTests complete. Passed: ${passed}, Failed: ${failed}`, `font-weight: bold; color: ${failed > 0 ? "red" : "green"}`);
     return failed === 0;
